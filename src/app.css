@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-white text-black dark:bg-spaceCadet dark:text-white
+  }
+
+  a {
+    @apply transition-colors duration-300
+  }
+
+  a:hover {
+    @apply text-seaGreen
+  }
+
+  input, select {
+    @apply bg-white p-2 rounded-md border-2 text-black leading-6 h-11
+  }
+  input:focus {
+    @apply border-2 border-seaGreen outline-none
+  }
+  option {
+    @apply leading-6
+  }
+  button {
+    @apply bg-slateGrey p-2 rounded-md border-2 border-slateGrey leading-6 h-11
+  }
+} 
+
+@layer components {
+  button.green {
+    @apply bg-middleGreen border-middleGreen
+  }
+}
