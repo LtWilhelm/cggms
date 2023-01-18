@@ -1,21 +1,17 @@
 <script lang="ts">
   import ComponentEditor from "$lib/components/ComponentEditor.svelte";
+    import { toast } from '@zerodevx/svelte-toast';
     import type { ActionData, PageData } from './$types';
 
   export let data: PageData;
   export let form: ActionData;
 
   if (form?.success) {
+    toast.push("Component Updated")
     setTimeout(() => {
-      form = undefined;
+      form = null;
     }, 3000)
   }
 </script>
-
-{#if form?.success}
-  <div class="pane container mt-8">
-    Component saved successfully
-  </div>
-{/if}
 
 <ComponentEditor {data} />

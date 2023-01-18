@@ -1,6 +1,4 @@
 <script lang="ts">
-  import FieldList from "$lib/components/FieldList.svelte";
-  import TagList from "$lib/components/TagList.svelte";
   import type { fieldTypes, IComponent, IMetadata } from "$lib/types";
 
   export let data: {
@@ -172,7 +170,7 @@
           <span>{tag.key} : {tag.value}</span>
           <span>
             <!-- <button on:click={() => dispatch("delete", tag.key)} class="bg-green">Edit</button> -->
-            <button on:click={() => metadata = metadata.filter(t => t.key === tag.key)} class="bg-red-100">Delete</button>
+            <button on:click={() => metadata = metadata.filter(t => t.key !== tag.key)} class="bg-red-100">Delete</button>
           </span>
         </li>
       {/each}

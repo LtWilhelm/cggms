@@ -30,7 +30,7 @@ export const actions: import('./$types').Actions = {
       metatags: (data.get('metadata') as string)?.split(',').map((t: string) => {
         const [key, value] = t.split('::');
         return {key, value}
-      })
+      }).filter(t => t.key && t.value)
     }
 
     const id = event.params.id
