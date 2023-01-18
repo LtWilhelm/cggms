@@ -11,7 +11,8 @@ const ContentType = new Schema({
     required: true,
     unique: true
   },
-  attributes: [Attribute]
+  attributes: [Attribute],
+  metatags: [Attribute]
 })
 
 export const contentTypes = model('contentType', ContentType);
