@@ -4,7 +4,7 @@
 
 @layer base {
   html {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Sofia Sans Semi Condensed','Open Sans', sans-serif;
     user-select: none;
   }
 
@@ -13,7 +13,7 @@
   }
 
   button {
-    @apply h-min px-2 py-1 rounded-lg shadow-lg text-white disabled:opacity-50
+    @apply h-min px-2 py-1 rounded-lg shadow-lg text-white disabled:opacity-50 bg-grizzly-0 border-2 border-t-white/10 border-l-white/10 border-b-black/20 border-r-black/20 bg-gradient-to-br from-black/20 to-transparent
   }
 
   a {

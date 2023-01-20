@@ -11,6 +11,10 @@ export interface IField {
   name: string;
   type: fieldTypes;
   ref: string;
+  attributes?: {
+    key: string;
+    value: string | number;
+  }[]
 }
 
 export interface IMetadata {
@@ -18,17 +22,26 @@ export interface IMetadata {
   value: string;
 }
 
-export interface IComponent {
+export interface IAttribute<T = string> {
+  _id: string;
+  key: string;
+  value: T | string;
+  attributes?: IAttribute[];
+}
+
+export interface IComponent<T = string> {
   _id: string;
   name: string;
-  attributes: {
-    _id: string;
-    key: string;
-    value: string;
-  }[];
-  metatags: {
-    _id: string;
-    key: string;
-    value: string;
-  }[];
+  attributes: IAttribute[];
+  metatags: IAttribute[];
+  components: T[];
+}
+
+export interface IContent {
+  _id: string;
+  component: string;
+  title: string;
+  fields: (number|string)[];
+  refs: string[];
+  components: IContent[];
 }

@@ -7,3 +7,15 @@ declare namespace App {
 	// interface PageData {}
 	// interface Platform {}
 }
+
+declare namespace svelteHTML {
+  // enhance elements
+  // interface IntrinsicElements {
+  //     'my-custom-element': { someattribute: string; 'on:event': (e: CustomEvent<any>) => void };
+  // }
+  // enhance attributes
+  interface HTMLAttributes<T> {
+      'on:outclick'?: (event: any) => any;
+  }
+}
+

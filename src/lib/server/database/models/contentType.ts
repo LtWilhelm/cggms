@@ -2,17 +2,21 @@ import { Schema, SchemaTypes, model } from 'mongoose';
 
 const Attribute = new Schema({
   key: SchemaTypes.String,
-  value: SchemaTypes.Mixed
+  value: SchemaTypes.Mixed,
+  attributes: [{
+    key: SchemaTypes.String,
+    value: SchemaTypes.Mixed,
+  }]
 })
 
-const ContentType = new Schema({
+const ContentTypeSchema = new Schema({
   name: {
     type: SchemaTypes.String,
     required: true,
     unique: true
   },
   attributes: [Attribute],
-  metatags: [Attribute]
+  metatags: [Attribute],
 })
 
-export const contentTypes = model('contentType', ContentType);
+export const Component = model('component', ContentTypeSchema);

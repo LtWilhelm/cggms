@@ -1,1 +1,2 @@
-export {contentTypes} from './contentType';
+export {Component} from './contentType';
+export {Content} from './content'

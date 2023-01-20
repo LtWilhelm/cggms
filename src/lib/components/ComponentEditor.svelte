@@ -58,7 +58,7 @@
   <section class="pane grid gap-4 col-span-2">
     <h2 class="text-xl font-bold">Create New Component</h2>
     <label>
-      <span>Type Name:</span>
+      <span>Component Name:</span>
       <input
         class="block mt-2 w-full"
         type="text"
