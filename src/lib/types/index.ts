@@ -41,7 +41,6 @@ export interface IContent {
   _id: string;
   component: string;
   title: string;
-  fields: (number|string)[];
   refs: string[];
-  components: IContent[];
+  [key: string]: string | number | (string | number)[];
 }

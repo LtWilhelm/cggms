@@ -1,9 +1,10 @@
 <script lang="ts">
-  import { ComponentService } from '$lib/stores/ComponentStore';
-  import type { IComponent, IContent } from '$lib/types';
-  import { toast } from '@zerodevx/svelte-toast';
-  import AttributeSelector from './AttributeSelector.svelte';
-  import ChangeWarning from './ChangeWarning.svelte';
+  import { enhance } from "$app/forms";
+  import { ComponentService } from "$lib/stores/ComponentStore";
+  import type { IComponent, IContent } from "$lib/types";
+  import { toast } from "@zerodevx/svelte-toast";
+  import AttributeSelector from "./AttributeSelector.svelte";
+  import ChangeWarning from "./ChangeWarning.svelte";
 
   export let content: Partial<IContent>;
   export let componentList: Partial<IComponent>[];
@@ -12,11 +13,11 @@
   let componentId = content.component;
   export let componentData: IComponent | undefined = undefined;
 
-  const values: Record<string, string | number | (string | number)[]> = {};
+  // const values: Record<string, string | number | (string | number)[]> = {...content};
 
   $: {
-    if (typeof window !== 'undefined' && componentData?._id !== componentId)
-    // console.log('requesting... for some reason');
+    if (typeof window !== "undefined" && componentData?._id !== componentId)
+      // console.log('requesting... for some reason');
       ComponentService()
         .get(componentId)
         .then((res) => res && (componentData = res));
@@ -32,15 +33,15 @@
             componentId = undefined;
           },
         },
-        sendIdTo: 'toastId',
+        sendIdTo: "toastId",
       },
       initial: 0,
       dismissable: false,
       theme: {
-        '--toastPadding': '0',
-        '--toastMsgPadding': '0',
+        "--toastPadding": "0",
+        "--toastMsgPadding": "0",
       },
-      target: 'center',
+      target: "center",
     });
   };
 </script>
@@ -55,7 +56,10 @@
         {/each}
       </select>
     {:else}
-    <p class="italic text-gray-100">Editing <span class="not-italic">{componentData.name}</span> - {title || 'untitled'}</p>
+      <p class="italic text-gray-100">
+        Editing <span class="not-italic">{componentData.name}</span> - {title ||
+          "untitled"}
+      </p>
       <button on:click={changeComponent}>Change component</button>
     {/if}
     <pre>{JSON.stringify(componentData, null, 2)}</pre>
@@ -63,18 +67,34 @@
   <div class="etched p-4">
     <label>
       <h3 class="font-bold text-lg">Content Title</h3>
-      <input type="text" bind:value={title} placeholder="Title">
+      <input type="text" bind:value={title} placeholder="Title" />
     </label>
   </div>
   {#each componentData?.attributes || [] as attribute}
-    <div class="etched p-4"><AttributeSelector {attribute} /></div>
+    <div class="etched p-4">
+      <h3 class="font-bold text-lg">{attribute.key}</h3>
+      <AttributeSelector {attribute} bind:value={content[attribute._id]} />
+    </div>
   {/each}
-  <form method="POST">
+  <form method="POST" use:enhance>
     <input type="hidden" name="title" value={title} />
     <input type="hidden" name="component" value={componentId} />
-    {#each componentData?.attributes.filter(a => a.key.startsWith('component__')) || [] as attribute}
-      <input type="hidden" value={JSON.stringify(values[attribute._id])} />
+    {#each componentData?.attributes.filter((a) => !a.key.startsWith("component__")) || [] as attribute}
+      <!-- {#if Array.isArray(values[attribute._id])}
+      {#each values[attribute._id] as value}
+      <input type="hidden" name={attribute._id} value={JSON.stringify(values[attribute._id])} />
+        
+      {/each}
+        {:else}
+        {/if} -->
+      <input
+        type="hidden"
+        name={attribute._id}
+        value={JSON.stringify(content[attribute._id])}
+      />
     {/each}
-    <button class="bg-green" type="submit" disabled={!(title && componentId)}>Save {title || 'untitled'}</button>
+    <button class="bg-green" type="submit" disabled={!(title && componentId)}
+      >Save {title || "untitled"}</button
+    >
   </form>
 </main>

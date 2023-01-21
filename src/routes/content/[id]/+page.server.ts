@@ -17,7 +17,12 @@ export const load: PageServerLoad = async ({ params }) => {
 }
 
 export const actions: Actions = {
-  default: async ({request}) => {
-    console.log(formBody(await request.formData()));
+  default: async ({request, params}) => {
+    const doc = formBody(await request.formData());
+
+    // TODO - implement revision collection to stage changes and then transfer them on final commit
+    await Content.findOneAndUpdate({_id: params.id}, doc);
+
+    return {success: true}
   }
 }

@@ -12,6 +12,13 @@ export function formBody(body: FormData) {
     if (v === "false") value = false;
     if (!isNaN(Number(v))) value = Number(v);
 
+    try {
+      const parsed = JSON.parse(value as string);
+      if (parsed) value = parsed
+    } catch {
+      
+    }
+
     // For grouped fields like multi-selects and checkboxes, we need to
     // store the values in an array.
     if (k in data) {
