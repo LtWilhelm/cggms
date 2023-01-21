@@ -12,6 +12,8 @@
   let componentId = content.component;
   export let componentData: IComponent | undefined = undefined;
 
+  const values: Record<string, string | number | (string | number)[]> = {};
+
   $: {
     if (typeof window !== 'undefined' && componentData?._id !== componentId)
     // console.log('requesting... for some reason');
@@ -27,6 +29,7 @@
         props: {
           onAccept: () => {
             componentData = undefined;
+            componentId = undefined;
           },
         },
         sendIdTo: 'toastId',
@@ -42,20 +45,36 @@
   };
 </script>
 
-<main class="pane container mt-8">
-  {#if !componentData}
-    <select class="mr-4" bind:value={componentId}>
-      <option value="">Select component</option>
-      {#each componentList as component}
-        <option value={component._id}>{component.name}</option>
-      {/each}
-    </select>
-  {:else}
-  <p class="italic text-gray-100">Editing <span class="not-italic">{componentData.name}</span> - {title || 'untitled'}</p>
-    <button on:click={changeComponent}>Change component</button>
-  {/if}
-  <pre>{JSON.stringify(componentData, null, 2)}</pre>
+<main class="pane container mt-8 flex flex-col gap-4">
+  <div class="etched p-4">
+    {#if !componentData}
+      <select class="mr-4" bind:value={componentId}>
+        <option value="">Select component</option>
+        {#each componentList as component}
+          <option value={component._id}>{component.name}</option>
+        {/each}
+      </select>
+    {:else}
+    <p class="italic text-gray-100">Editing <span class="not-italic">{componentData.name}</span> - {title || 'untitled'}</p>
+      <button on:click={changeComponent}>Change component</button>
+    {/if}
+    <pre>{JSON.stringify(componentData, null, 2)}</pre>
+  </div>
+  <div class="etched p-4">
+    <label>
+      <h3 class="font-bold text-lg">Content Title</h3>
+      <input type="text" bind:value={title} placeholder="Title">
+    </label>
+  </div>
   {#each componentData?.attributes || [] as attribute}
-    <AttributeSelector {attribute} />
+    <div class="etched p-4"><AttributeSelector {attribute} /></div>
   {/each}
+  <form method="POST">
+    <input type="hidden" name="title" value={title} />
+    <input type="hidden" name="component" value={componentId} />
+    {#each componentData?.attributes.filter(a => a.key.startsWith('component__')) || [] as attribute}
+      <input type="hidden" value={JSON.stringify(values[attribute._id])} />
+    {/each}
+    <button class="bg-green" type="submit" disabled={!(title && componentId)}>Save {title || 'untitled'}</button>
+  </form>
 </main>

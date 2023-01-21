@@ -1,6 +1,7 @@
+import { formBody } from '$lib/formHelpers';
 import { Component, Content } from '$lib/server/database';
 import type { IComponent, IContent } from '$lib/types';
-import type { PageServerLoad } from './$types';
+import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params }) => {
   const content: Partial<IContent> = await Content.findById(params.id, { _id: 0, __v: 0 }).lean();
@@ -15,7 +16,8 @@ export const load: PageServerLoad = async ({ params }) => {
   return { content, components, component }
 }
 
-// export const actions: Actions = {
-//   default: async () => {
-//   }
-// }
+export const actions: Actions = {
+  default: async ({request}) => {
+    console.log(formBody(await request.formData()));
+  }
+}
