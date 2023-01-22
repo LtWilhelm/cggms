@@ -6,3 +6,4 @@ const ContentSchema = new Schema({
 }, {strict: false});
 
 export const Content = model('content', ContentSchema, 'content');
+export const Revision = model('revision', ContentSchema);

@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { enhance } from '$app/forms';
   import type { fieldTypes, IComponent, IMetadata } from "$lib/types";
 
   export let data: {
@@ -128,7 +129,7 @@
         {/each}
       </ul>
     </div>
-    <form method="POST">
+    <form method="POST" use:enhance>
       <input type="hidden" name="name" value={name} />
       <input
         type="hidden"

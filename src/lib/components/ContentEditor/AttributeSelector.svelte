@@ -1,24 +1,24 @@
 <script lang="ts">
-  import type { IAttribute } from '$lib/types';
-  import Field from './Field.svelte';
+  import type { Block, IAttribute } from "$lib/types";
+  import ComponentContent from "./ComponentContent.svelte";
+  import Field from "./Field.svelte";
+  import ReferenceSelector from "./ReferenceSelector.svelte";
 
   export let attribute: IAttribute;
-  export let value: string | number | (string | number)[] | undefined = undefined;
-
-  let component = Field;
-
-  // if (attribute.key.startsWith('component__'))
-  //   component = 
-
+  export let value: Block | Record<string, Block> | undefined = undefined;
+  if (value === 'undefined')console.log(attribute);
+  export let heritage: string[] = [];
 </script>
 
-{#if attribute.value.startsWith('component__')}
-<div>Hello, am component</div>
-{:else if attribute.value.startsWith('ref__')}
-<div>Hello, am ref</div>
-{:else if attribute.value === 'long'}
+{#if attribute.value.startsWith("component__")}
+  <ComponentContent
+    componentId={attribute.value.split("__")[1]}
+    heritage={[...heritage, attribute._id]}
+  />
+{:else if attribute.value.startsWith("reference__") && !(Array.isArray(value) || typeof value === "number")}
+  <ReferenceSelector {attribute} bind:value={value} />
+{:else if attribute.value === "long"}
   <div>Hello, am long text</div>
-{:else if typeof value === 'string' || typeof value === 'number' || typeof value === 'undefined'}
-  <Field type={attribute.value} placeholder={attribute.key} bind:value={value} />
+{:else if typeof value === "string" || typeof value === "number" || typeof value === "undefined"}
+  <Field type={attribute.value} placeholder={attribute.key} bind:value />
 {/if}
-

@@ -6,7 +6,7 @@
   export let data: PageData;
   export let form: ActionData;
 
-  if (form?.success) {
+  $: if (form?.success) {
     toast.push("Component Updated");
     setTimeout(() => {
       form = null;

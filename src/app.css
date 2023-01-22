@@ -45,6 +45,20 @@
   select {
     height: 56px
   }
+
+  table input {
+    @apply placeholder:text-transparent p-1 w-full
+  }
+  td, tr {
+    @apply min-w-fit p-2
+  }
+
+  table {
+    @apply etched
+  }
+  tbody tr {
+    @apply odd:bg-black/10
+  }
 }
 
 @layer utilities {

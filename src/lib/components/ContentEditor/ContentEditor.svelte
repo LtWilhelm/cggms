@@ -1,27 +1,30 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
   import { ComponentService } from "$lib/stores/ComponentStore";
+  import { ContentReady, ContentStore } from "$lib/stores/ContentStore";
   import type { IComponent, IContent } from "$lib/types";
   import { toast } from "@zerodevx/svelte-toast";
   import AttributeSelector from "./AttributeSelector.svelte";
   import ChangeWarning from "./ChangeWarning.svelte";
 
-  export let content: Partial<IContent>;
+  export let content: IContent;
   export let componentList: Partial<IComponent>[];
 
   let title = content.title;
-  let componentId = content.component;
+  let componentId: string | undefined = content.component;
   export let componentData: IComponent | undefined = undefined;
 
-  // const values: Record<string, string | number | (string | number)[]> = {...content};
+  // const values: Record<string, Block> = {...content};
 
   $: {
     if (typeof window !== "undefined" && componentData?._id !== componentId)
       // console.log('requesting... for some reason');
       ComponentService()
         .get(componentId)
-        .then((res) => res && (componentData = res));
+        .then(res => res && (componentData = res));
   }
+
+  $: ContentStore.set(content);
 
   const changeComponent = () => {
     toast.push({
@@ -44,6 +47,11 @@
       target: "center",
     });
   };
+  let ready = true;
+  
+  $: {
+    ready = Object.values($ContentReady).every(a => a);
+  }
 </script>
 
 <main class="pane container mt-8 flex flex-col gap-4">
@@ -62,7 +70,7 @@
       </p>
       <button on:click={changeComponent}>Change component</button>
     {/if}
-    <pre>{JSON.stringify(componentData, null, 2)}</pre>
+    <!-- <pre>{JSON.stringify(componentData, null, 2)}</pre> -->
   </div>
   <div class="etched p-4">
     <label>
@@ -76,10 +84,10 @@
       <AttributeSelector {attribute} bind:value={content[attribute._id]} />
     </div>
   {/each}
-  <form method="POST" use:enhance>
+  <form action="?/save" method="POST" use:enhance>
     <input type="hidden" name="title" value={title} />
     <input type="hidden" name="component" value={componentId} />
-    {#each componentData?.attributes.filter((a) => !a.key.startsWith("component__")) || [] as attribute}
+    {#each componentData?.attributes.filter(a => !a.value.startsWith("component__")) || [] as attribute}
       <!-- {#if Array.isArray(values[attribute._id])}
       {#each values[attribute._id] as value}
       <input type="hidden" name={attribute._id} value={JSON.stringify(values[attribute._id])} />
@@ -93,7 +101,7 @@
         value={JSON.stringify(content[attribute._id])}
       />
     {/each}
-    <button class="bg-green" type="submit" disabled={!(title && componentId)}
+    <button class="bg-green" type="submit" disabled={!(title && componentId) || !ready}
       >Save {title || "untitled"}</button
     >
   </form>

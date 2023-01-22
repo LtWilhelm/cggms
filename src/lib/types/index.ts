@@ -29,18 +29,20 @@ export interface IAttribute<T = string> {
   attributes?: IAttribute[];
 }
 
-export interface IComponent<T = string> {
+export interface IComponent{
   _id: string;
   name: string;
   attributes: IAttribute[];
   metatags: IAttribute[];
-  components: T[];
+  components: string[];
 }
+
+export type Block = string | number | (string | number)[];
 
 export interface IContent {
   _id: string;
   component: string;
   title: string;
   refs: string[];
-  [key: string]: string | number | (string | number)[];
+  [key: string]: Block | Record<string, Block>;
 }
