@@ -54,7 +54,7 @@
   }
 
   table {
-    @apply etched
+    @apply etched overflow-hidden
   }
   tbody tr {
     @apply odd:bg-black/10
@@ -76,7 +76,7 @@
   }
 
   .etched {
-    @apply dark:bg-grizzly-100/50 bg-white/50 rounded-lg border border-t-purple-100/10 border-l-purple-100/10 border-b-white/10 border-r-white/10
+    @apply dark:bg-grizzly-100/50 bg-white/50 rounded-lg border empty:border-none border-t-purple-100/10 border-l-purple-100/10 border-b-white/10 border-r-white/10
   }
 
   .light-pane {

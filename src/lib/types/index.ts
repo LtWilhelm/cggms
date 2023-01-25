@@ -22,11 +22,11 @@ export interface IMetadata {
   value: string;
 }
 
-export interface IAttribute<T = string> {
-  _id: string;
+export interface IAttribute<T = string, K = string> {
+  _id?: string;
   key: string;
   value: T | string;
-  attributes?: IAttribute[];
+  attributes?: IAttribute<K>[];
 }
 
 export interface IComponent{

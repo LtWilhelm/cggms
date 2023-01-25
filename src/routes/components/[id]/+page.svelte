@@ -1,5 +1,5 @@
 <script lang="ts">
-  import ComponentEditor from "$lib/components/ComponentEditor.svelte";
+  import ComponentEditor from "$lib/components/ComponentEditor/ComponentEditor.svelte";
   import { toast } from "@zerodevx/svelte-toast";
   import type { ActionData, PageData } from "./$types";
 

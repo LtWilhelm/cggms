@@ -16,11 +16,9 @@ export function formBody(body: FormData) {
       const parsed = JSON.parse(value as string);
       if (parsed) value = parsed
     } catch {
-      
+      // 
     }
 
-    // For grouped fields like multi-selects and checkboxes, we need to
-    // store the values in an array.
     if (k in data) {
       const val = data[k];
       value = Array.isArray(val) ? [...val, value] : [val, value];

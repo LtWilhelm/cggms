@@ -8,12 +8,13 @@
   export let value: Block | Record<string, Block> | undefined = undefined;
   if (value === 'undefined')console.log(attribute);
   export let heritage: string[] = [];
+  const heritageId = attribute._id || '';
 </script>
 
 {#if attribute.value.startsWith("component__")}
   <ComponentContent
     componentId={attribute.value.split("__")[1]}
-    heritage={[...heritage, attribute._id]}
+    heritage={[...heritage, heritageId]}
   />
 {:else if attribute.value.startsWith("reference__") && !(Array.isArray(value) || typeof value === "number")}
   <ReferenceSelector {attribute} bind:value={value} />
