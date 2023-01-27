@@ -76,7 +76,7 @@
                   <AttributeSelector
                     {attribute}
                     {heritage}
-                    bind:value={values[attribute._id]}
+                    bind:value={values[attribute._id || '']}
                   />
                 </td>
               {/each}
@@ -85,11 +85,11 @@
         </table>
       </div>
       {#each componentData.attributes.filter(a => a.value.startsWith("reference__") && a.value.startsWith("component__")) as attribute}
-        <AttributeSelector {attribute} {heritage} bind:value={values[attribute._id]} />
+        <AttributeSelector {attribute} {heritage} bind:value={values[attribute._id || '']} />
       {/each}
     {:else}
       {#each componentData?.attributes || [] as attribute}
-        <AttributeSelector {attribute} {heritage} bind:value={values[attribute._id]} />
+        <AttributeSelector {attribute} {heritage} bind:value={values[attribute._id || '']} />
       {/each}
     {/if}
     <form action="?/component" method="POST" use:enhance>

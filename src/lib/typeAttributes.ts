@@ -26,7 +26,7 @@ export const getAttributes = (type: string) => {
         value: 'Set to `0` for unlimited values'
       }]
     },
-    ...typeAttributes[type]
+    ...typeAttributes[type] || []
   ]
 
   return atts;
