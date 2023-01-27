@@ -13,7 +13,7 @@ export const load: PageServerLoad = async ({ params }) => {
 
   if (component) {
     component._id = component._id.toString();
-    component.attributes = component.attributes.map(a => ({ ...a, _id: a._id.toString() }))
+    component.attributes = JSON.parse(JSON.stringify(component.attributes))
   }
 
   return { content, components, component }

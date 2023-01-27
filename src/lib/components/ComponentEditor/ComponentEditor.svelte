@@ -1,8 +1,8 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
-  import { getAttributes } from '$lib/typeAttributes';
-  import type { fieldTypes, IAttribute, IComponent, IMetadata } from "$lib/types";
-  import AttributeEditor from './AttributeEditor.svelte';
+  import { getAttributes } from "$lib/typeAttributes";
+  import type { IAttribute, IComponent, IMetadata } from "$lib/types";
+  import AttributeEditor from "./AttributeEditor.svelte";
 
   export let data: {
     component?: IComponent;
@@ -19,14 +19,19 @@
     ...field,
   };
 
-  let fields: IAttribute<string, string | number | boolean>[] = [...(data.component?.attributes || [])];
-  let metadata: import("$lib/types").IMetadata[] =
+  let fields: IAttribute<string, string | number | boolean>[] = [
+    ...(data.component?.attributes || []),
+  ];
+  let metadata: IMetadata[] =
     (data.component?.metatags as IMetadata[]) || [];
 
   let name = data.component?.name;
 
   const addField = () => {
-    fields = [...fields, currentField];
+    const index = fields.findIndex(f => f._id === currentField._id);
+    if (index) {
+      fields[index] = currentField;
+    } else fields = [...fields, currentField];
     currentField = {
       ...field,
     };
@@ -34,7 +39,9 @@
 
   const selectField = (field: IAttribute) => {
     currentField = { ...field };
-    currentField.attributes = getAttributes(currentField.value).filter(a => !currentField.attributes?.some(ab => ab.key === a.key));
+    currentField.attributes = currentField.attributes?.concat(getAttributes(currentField.value).filter(
+      a => !currentField.attributes?.some(ab => ab.key === a.key)
+    ));
   };
 
   const checkType = (value: string) => value.split("__")[0];
@@ -44,12 +51,12 @@
       currentTarget: EventTarget & HTMLSelectElement;
     }
   ) => {
-    currentField.value = e.currentTarget.value
+    currentField.value = e.currentTarget.value;
     currentField.attributes = getAttributes(currentField.value);
   };
 
   // $: currentField.attributes = getAttributes(currentField.value)
-  
+
   let newMetadataKey: string;
   let newMetadataValue: string;
   const addTag = () => {
@@ -95,6 +102,7 @@
             <option value="string">String</option>
             <option value="number">Number</option>
             <option value="long">Long Form</option>
+            <option value="boolean">Boolean</option>
             {#if data.components}
               <option value="reference">Reference</option>
               <option value="component">Component</option>
@@ -120,7 +128,7 @@
         <ul class="etched mt-4">
           {#each currentField.attributes || [] as attribute}
             <li class="p-4 odd:bg-black/10 flex gap-4 items-center">
-              <AttributeEditor bind:attribute={attribute}/>
+              <AttributeEditor bind:attribute />
             </li>
           {/each}
         </ul>

@@ -1,10 +1,9 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
   import { ComponentService } from "$lib/stores/ComponentStore";
-  import { ContentReady, ContentService, ContentStore } from "$lib/stores/ContentStore";
+  import { ContentReady, ContentService } from "$lib/stores/ContentStore";
   import type { Block, IComponent } from "$lib/types";
-  import { stringify } from "postcss";
-  import { onMount } from "svelte";
+
   import AttributeSelector from "./AttributeSelector.svelte";
 
   export let heritage: string[];
