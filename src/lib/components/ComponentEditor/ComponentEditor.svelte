@@ -2,6 +2,7 @@
   import { enhance } from "$app/forms";
   import { getAttributes } from "$lib/typeAttributes";
   import type { IAttribute, IComponent, IMetadata } from "$lib/types";
+  import DraggableList from "../DraggableList.svelte";
   import AttributeEditor from "./AttributeEditor.svelte";
 
   export let data: {
@@ -134,7 +135,7 @@
         </ul>
       </div>
 
-      <ul class="etched h-min">
+      <!-- <ul class="etched h-min">
         {#each fields as field}
           <li class="p-4 odd:bg-black/10 flex justify-between items-center">
             <div>
@@ -152,7 +153,9 @@
             </span>
           </li>
         {/each}
-      </ul>
+      </ul> -->
+
+      <DraggableList bind:values={fields} on:select={f => selectField(f.detail)} />
     </div>
     <form method="POST" use:enhance>
       <input type="hidden" name="name" value={name} />
